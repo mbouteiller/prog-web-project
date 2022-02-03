@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { StationService } from './station.service';
+import { StationController } from './controllers/station.controller';
+import { StationService } from './services/station.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Station, StationSchema } from './schema/station.schema';
+import { Station, StationSchema } from './schemas/station.schema';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/test_db'),
+    MongooseModule.forRoot('mongodb+srv://PW_team1_user:PW_team1_pwd@progwebcluster.lffk9.mongodb.net/PW_team1_db'),
 
     MongooseModule.forFeature([{schema: StationSchema, name: Station.name, collection: 'Station'}], )
   ],
-  controllers: [AppController],
+  controllers: [StationController],
   providers: [StationService],
 })
 export class AppModule {}
