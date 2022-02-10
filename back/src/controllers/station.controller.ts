@@ -3,7 +3,7 @@ import { StationService } from '../services/station.service';
 import { Station } from '../schemas/station.schema';
 import { StationEntriesDto } from '../dtos/station_entries.dto';
 
-@Controller('station')
+@Controller('stations')
 export class StationController {
   constructor(private readonly appService: StationService) {}
 
