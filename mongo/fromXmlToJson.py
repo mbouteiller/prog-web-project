@@ -9,7 +9,11 @@ pdv_liste = dictionary["pdv_liste"]["pdv"];
 
 
 for pdv in pdv_liste:
-    
+    if "_latitude" in pdv and pdv["_latitude"]:
+        pdv["_latitude"] = float(pdv["_latitude"])
+    if "_longitude" in pdv and pdv["_longitude"] :
+        pdv["_longitude"] = float(pdv["_longitude"])
+        
     #fix horaires->jour list bug
     if "horaires" in pdv :
         horaires = pdv["horaires"]
@@ -35,6 +39,10 @@ for pdv in pdv_liste:
             pdv["prix"] = []
         else :
             pdv["prix"] = [pdv["prix"]]
+    if "prix" in pdv :
+        for cPrix in pdv["prix"] :
+            cPrix["_valeur"] = float(cPrix["_valeur"])
+            
     
     #fix rupture list bug
     if "rupture" in pdv and isinstance(pdv["rupture"], list) == False :

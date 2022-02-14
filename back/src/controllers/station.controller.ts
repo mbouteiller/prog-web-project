@@ -9,7 +9,8 @@ export class StationController {
   constructor(private readonly appService: StationService) {}
 
   @Get('test')
-  test(@Query('cp') cp: string): Promise<StationDto[]> {
+  test(@Query('cp') cp: string, @Query('raw') raw = false): Promise<Station[] | StationDto[]> {
+    if (cp && raw) return this.appService.getAllFromCp(cp);
     if (cp) return this.appService.getAllFromCp(cp).then((lst) => lst.map((s) => new StationDto(s)));
     else return this.appService.getAll().then((lst) => lst.map((s) => new StationDto(s)));
   }
