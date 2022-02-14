@@ -1,4 +1,4 @@
-import { IsLatitude, IsLongitude, IsNumber } from 'class-validator';
+import { IsLatitude, IsLongitude } from 'class-validator';
 
 export class PositionDto {
   @IsLatitude()

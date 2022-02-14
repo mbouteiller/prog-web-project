@@ -1,4 +1,4 @@
-import { IsNumber, IsObject, IsString, Min, ValidateIf, ValidateNested } from 'class-validator';
+import { IsNumber, IsString, Min, ValidateNested } from 'class-validator';
 import { DistanceDto } from './distance.dto';
 
 export class StationEntriesDto {
