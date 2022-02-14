@@ -25,9 +25,8 @@ export class StationDto {
       this.cp = schema._cp;
       this.department_num = schema._cp.slice(0, 2);
     }
-    if (schema._longitude) this.longitude = schema._longitude;
-    if (schema._latitude) this.latitude = schema._latitude;
-    if (schema._latitude) this.latitude = schema._latitude;
+    if (schema._longitude) this.longitude = schema._longitude / 100000;
+    if (schema._latitude) this.latitude = schema._latitude / 100000;
     if (schema._pop) this.type = StationType[schema._pop];
     if (schema.address) this.address = schema.address;
     if (schema.ville) this.ville = schema.ville;
@@ -58,7 +57,7 @@ export class StationDto {
           nom: f._nom,
           id: f._id,
           maj: f._maj,
-          valeur: f._valeur,
+          valeur: f._valeur / 1000,
         } as FuelDto;
       });
     } else this.prix = [];
