@@ -1,5 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Horaires, HorairesSchema } from './horaires.schema';
+import { Prix, PrixSchema } from './prix.schema';
+import { Rupture, RuptureSchema } from './rupture.schema';
+import { Fermeture, FermetureSchema } from './fermeture.schema';
 
 export type StationDocument = Station & Document;
 
@@ -26,51 +30,20 @@ export class Station {
   @Prop()
   ville: string;
 
-  @Prop()
-  horaires: {
-    '_automate-24-24': string;
-    jour: {
-      _id: number;
-      _nom: string;
-      _ferme: string;
-      horaire: {
-        _ouverture: string;
-        _fermeture: string;
-      };
-    }[];
-  };
+  @Prop({ type: HorairesSchema })
+  horaires: Horaires;
 
   @Prop()
   services: string[];
 
-  @Prop()
-  prix: {
-    _nom: string;
-    _id: number;
-    _maj: string;
-    _valeur: number;
-  }[];
+  @Prop({ type: [PrixSchema] })
+  prix: Prix[];
 
-  @Prop()
-  rupture: {
-    _nom: string;
-    _id: number;
-    _debut: string;
-    _fin: string;
-  }[];
+  @Prop({ type: [RuptureSchema] })
+  rupture: Rupture[];
 
-  @Prop()
-  fermeture:
-    | {
-        type: string;
-        debut: string;
-        fin: string;
-      }
-    | {
-        type: string;
-        debut: string;
-        fin: string;
-      }[];
+  @Prop({ type: [FermetureSchema] })
+  fermeture: Fermeture[];
 }
 
 export const StationSchema = SchemaFactory.createForClass(Station);
