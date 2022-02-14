@@ -17,6 +17,12 @@ export class StationService {
   }
 
   getWithFilter(filter: StationEntriesDto) {
-    return null;
+    let query: any = {};
+    if (filter.priceMin) query['prix._valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
+    return this.stationModel.find(query).exec();
+  }
+
+  retrieveFuels() {
+    return this.stationModel.distinct('prix._nom');
   }
 }

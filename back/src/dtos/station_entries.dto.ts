@@ -15,4 +15,7 @@ export class StationEntriesDto {
 
   @IsString()
   public postalCode: string;
+
+  @IsString()
+  public carburant: string;
 }
