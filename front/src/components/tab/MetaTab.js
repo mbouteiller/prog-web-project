@@ -62,11 +62,6 @@ function MetaTab() {
     let response = await fetch(url);
     if (response.ok) {
       let json = await response.json();
-      json = json.map(v => {
-        v.latitude = v._latitude / 100000;
-        v.longitude = v._longitude / 100000;
-        return v;
-      });
       console.log(json[0]);
       return json;
     } else {
