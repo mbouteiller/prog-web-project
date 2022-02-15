@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class DistanceDto {
   @ApiProperty({
-    description: 'The distance limit around the referred position',
+    description: 'The distance limit around the referred position in kilometers',
     example: '100',
   })
   @IsNotEmpty()

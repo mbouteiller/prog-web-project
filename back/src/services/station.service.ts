@@ -17,8 +17,21 @@ export class StationService {
   }
 
   getWithFilter(filter: StationEntriesDto) {
-    let query: any = {};
-    if (filter.priceMin) query['prix._valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
+    const query: any = {};
+    if (filter.postalCode) query['_cp'] = { $regex: filter.postalCode, $options: 'i' };
+    if (filter.fuel) query['prix._nom'] = filter.fuel;
+    //TODO price filter
+    if (filter.priceMin || filter.priceMax) {
+      if (filter.priceMin && filter.priceMax) query['prix._valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
+      else if (filter.priceMin) query['prix._valeur'] = { $gte: filter.priceMin };
+      else query['prix._valeur'] = { $lte: filter.priceMax };
+    }
+    //TODO price distance
+    if (filter.distance) {
+      query['_latitude'] = filter.distance.position.lat;
+      query['_longitude'] = filter.distance.position.long;
+    }
+    console.log(query);
     return this.stationModel.find(query).exec();
   }
 
