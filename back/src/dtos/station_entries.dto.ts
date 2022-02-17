@@ -1,8 +1,8 @@
-import { IsNumber, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
+import {IsArray, IsNumber, IsOptional, IsString, Min, ValidateNested} from 'class-validator';
 import { DistanceDto } from './distance.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class StationEntriesDto {
+export class StationRequestDto {
   @ApiPropertyOptional({
     description: 'The minimum price that the User wants to pay',
     example: '0.5',
@@ -38,8 +38,8 @@ export class StationEntriesDto {
 
   @ApiPropertyOptional({
     description: 'Search only station which sell this type of fuel',
-    example: 'Gazole',
+    example: ['Gazole'],
   })
-  @IsString()
-  public fuel: string;
+  @IsArray()
+  public fuel: string[];
 }

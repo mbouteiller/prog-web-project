@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Query } from '@nestjs/common';
 import { StationService } from '../services/station.service';
 import { Station } from '../schemas/station.schema';
-import { StationEntriesDto } from '../dtos/station_entries.dto';
+import { StationRequestDto } from '../dtos/station_entries.dto';
 import { StationDto } from '../dtos/station/station.dto';
 import { ApiBody, ApiExcludeEndpoint, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -22,7 +22,7 @@ export class StationController {
     summary: 'Get all station corresponding of the research',
   })
   @Get()
-  GetStationFromFilter(@Body() filter: StationEntriesDto) {
+  GetStationFromFilter(@Body() filter: StationRequestDto) {
     return this.appService.getWithFilter(filter);
   }
 }

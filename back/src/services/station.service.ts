@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Station, StationDocument } from '../schemas/station.schema';
 import { Model } from 'mongoose';
-import { StationEntriesDto } from '../dtos/station_entries.dto';
+import { StationRequestDto } from '../dtos/station_entries.dto';
 
 @Injectable()
 export class StationService {
@@ -16,23 +16,31 @@ export class StationService {
     return this.stationModel.find({ _cp: cp }).exec();
   }
 
-  getWithFilter(filter: StationEntriesDto) {
-    const query: any = {};
-    if (filter.postalCode) query['_cp'] = { $regex: filter.postalCode, $options: 'i' };
-    if (filter.fuel) query['prix._nom'] = filter.fuel;
-    //TODO price filter
+  getWithFilter(filter: StationRequestDto) {
+    const match: any = {};
+    if (filter.fuel) match['prix._nom'] = { $in: filter.fuel };
+    if (filter.postalCode) match['_cp'] = { $regex: filter.postalCode, $options: 'i' };
     if (filter.priceMin || filter.priceMax) {
-      if (filter.priceMin && filter.priceMax) query['prix._valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
-      else if (filter.priceMin) query['prix._valeur'] = { $gte: filter.priceMin };
-      else query['prix._valeur'] = { $lte: filter.priceMax };
+      if (filter.priceMin && filter.priceMax) match['prix._valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
+      else if (filter.priceMin) match['prix._valeur'] = { $gte: filter.priceMin };
+      else match['prix._valeur'] = { $lte: filter.priceMax };
     }
-    //TODO price distance
-    if (filter.distance) {
-      query['_latitude'] = filter.distance.position.lat;
-      query['_longitude'] = filter.distance.position.long;
-    }
-    console.log(query);
-    return this.stationModel.find(query).exec();
+    return this.stationModel.aggregate([
+      {
+        $unwind: '$prix',
+      },
+      {
+        $match: match,
+      },
+      {
+        $group: {
+          _id: '$_id',
+          prix: {
+            $push: '$prix',
+          },
+        },
+      },
+    ]);
   }
 
   retrieveFuels() {
