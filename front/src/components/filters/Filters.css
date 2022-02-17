@@ -1,0 +1,15 @@
+.container {
+    width: 25%;
+    height: 500px;
+}
+
+.fuel-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 1em;
+}
+
+.fuel {
+    flex: 1 0 50%;
+}
