@@ -5,16 +5,19 @@ import {faBars, faGasPump} from "@fortawesome/free-solid-svg-icons";
 import React, {useEffect, useState} from 'react'
 import MetaTab from "./components/tab/MetaTab";
 import MapComponent from "./components/map/Map";
+import Filters from "./components/filters/Filters";
+import {get} from "leaflet/src/dom/DomUtil";
 
 
 function App() {
 
-  const url = "http://localhost:5000/stations/test?cp=06000"
+  const url = "http://localhost:5000/"
   const [stations, setStations] = useState([])
+  const [fuels, setFuels] = useState([])
   const [loading, setLoading] = useState(false)
 
-  async function getStations() {
-    let response = await fetch(url);
+  async function getStations(args) {
+    let response = await fetch(url + "stations/test?cp=06000" + args);
     if (response.ok) {
       let json = await response.json();
       json = json.filter(isValidPosition)
@@ -25,11 +28,24 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if (loading) {
-      getStations().then(() => setLoading(false))
+  async function getFuels() {
+    let response = await fetch(url + "api/fuel");
+    if (response.ok) {
+      let json = await response.json();
+      setFuels(json)
+      console.log(fuels)
+    } else {
+      alert("HTTP-Error: " + response.status);
     }
-  })
+  }
+
+  useEffect(() => {
+    getStations("").then(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    getFuels().then()
+  }, [])
 
   function isValidPosition(element) {
     return !(element.latitude === undefined || element.longitude === undefined)
@@ -42,11 +58,12 @@ function App() {
         <p><i className="fas fa-gas-pump"/>FUEL</p>
         <FontAwesomeIcon className="logo" icon={faBars} size="2x" />
       </header>
-      <div>
-        <button onClick={() => {
-          setLoading(true)
-        }}>MARCHE CONNARD</button>
+      <button onClick={() => {
+        setLoading(true)
+      }}>MARCHE CONNARD</button>
+      <div style={{display: 'flex', flexDirection: 'row'}}>
         <MapComponent stations={stations}/>
+        <Filters fuels={fuels} changeStations={getStations}/>
       </div>
       <div className="tab">
         <MetaTab/>
