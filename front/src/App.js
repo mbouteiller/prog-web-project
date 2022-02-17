@@ -1,13 +1,23 @@
 import './App.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faBars, faGasPump} from "@fortawesome/free-solid-svg-icons";
-import React, {useEffect, useState} from 'react'
+import {faGasPump} from "@fortawesome/free-solid-svg-icons";
+import styled from 'styled-components'
+import React, {useContext, useEffect, useState} from 'react'
 import MetaTab from "./components/tab/MetaTab";
 import MapComponent from "./components/map/Map";
 import Filters from "./components/filters/Filters";
 import {get} from "leaflet/src/dom/DomUtil";
+import {ThemeContext} from "./utils/context/Theme";
 
+const NightModeButton = styled.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+    margin: 10px;
+`
 
 function App() {
 
@@ -15,6 +25,8 @@ function App() {
   const [stations, setStations] = useState([])
   const [fuels, setFuels] = useState([])
   const [loading, setLoading] = useState(false)
+
+  const { toggleTheme, theme } = useContext(ThemeContext)
 
   async function getStations(args) {
     let response = await fetch(url + "stations/test?cp=06000" + args);
@@ -53,10 +65,13 @@ function App() {
 
   return (
     <div className="App">
+      <ThemeContext.Provider value="dark">
       <header className="App-header">
         <FontAwesomeIcon className="logo" icon={faGasPump} size="3x" />
         <p><i className="fas fa-gas-pump"/>FUEL</p>
-        <FontAwesomeIcon className="logo" icon={faBars} size="2x" />
+        <NightModeButton onClick={() => toggleTheme()}>
+          Thème : {theme === 'light' ? '☀️' : '🌙 '}
+        </NightModeButton>
       </header>
       <button onClick={() => {
         setLoading(true)
@@ -68,6 +83,7 @@ function App() {
       <div className="tab">
         <MetaTab/>
       </div>
+      </ThemeContext.Provider>
     </div>
   );
 }
