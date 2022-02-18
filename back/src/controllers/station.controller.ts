@@ -24,8 +24,8 @@ export class StationController {
     summary: 'Get all station corresponding of the research',
   })
   @Get()
-  GetStationFromFilter(@Body() filter: StationRequestDto) {
-    return this.appService.getWithFilter(filter);
+  GetStationFromFilter(@Body() filter: StationRequestDto): Promise<StationDto[]> {
+    return this.appService.getWithFilter(filter).then((lst) => lst.map((s) => new StationDto(s)));
   }
 
   @ApiOperation({

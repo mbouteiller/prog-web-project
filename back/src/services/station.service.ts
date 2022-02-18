@@ -4,6 +4,8 @@ import { Station, StationDocument } from '../schemas/station.schema';
 import { Model } from 'mongoose';
 import { StationRequestDto } from '../dtos/station_entries.dto';
 import { StationPrixOnly } from '../schemas/station-prix-only.schema';
+import { PositionDto } from '../dtos/position.dto';
+import { DistanceDto } from '../dtos/distance.dto';
 
 @Injectable()
 export class StationService {
@@ -21,7 +23,7 @@ export class StationService {
   }
 
   getWithFilter(filter: StationRequestDto) {
-    const match: any = {};
+    let match: any = {};
     const prixMatch: any = {};
     if (filter.fuel) prixMatch['_nom'] = { $in: filter.fuel };
     if (filter.postalCode) match['_cp'] = { $regex: filter.postalCode, $options: 'i' };
@@ -31,6 +33,11 @@ export class StationService {
       else prixMatch['_valeur'] = { $lte: filter.priceMax };
     }
     match['prix'] = { $elemMatch: prixMatch };
+    match = {
+      ...match,
+      ...filter.innerRequest,
+      ...StationService.fromPositionRequestToMatchRequest(filter.distance),
+    };
     return this.stationModel
       .aggregate([
         {
@@ -45,7 +52,7 @@ export class StationService {
   }
 
   getPrixWithFilter(filter: StationRequestDto): Promise<StationPrixOnly[]> {
-    const match: any = {};
+    let match: any = {};
     const prixMatch: any = {};
     if (filter.fuel) prixMatch['_nom'] = { $in: filter.fuel };
     if (filter.postalCode) match['_cp'] = { $regex: filter.postalCode, $options: 'i' };
@@ -55,6 +62,11 @@ export class StationService {
       else prixMatch['_valeur'] = { $lte: filter.priceMax };
     }
     match['prix'] = { $elemMatch: prixMatch };
+    match = {
+      ...match,
+      ...filter.innerRequest,
+      ...StationService.fromPositionRequestToMatchRequest(filter.distance),
+    };
     return this.prixModel
       .aggregate([
         {
@@ -62,5 +74,23 @@ export class StationService {
         },
       ])
       .exec() as Promise<StationPrixOnly[]>;
+  }
+
+  private static fromPositionRequestToMatchRequest(request: DistanceDto): any {
+    if (!request) return {};
+    const kmToLat = (dist: number) => dist / 110.574;
+    const kmToLong = (dist: number) => dist / 111.32;
+
+    const dLat = kmToLat(request.distance);
+    const dLong = kmToLong(request.distance);
+    const minLat = (request.position.lat - dLat) * 100000;
+    const minLong = (request.position.long - dLong) * 100000;
+    const maxLat = (request.position.lat + dLat) * 100000;
+    const maxLong = (request.position.long + dLong) * 100000;
+
+    return {
+      _latitude: { $gte: minLat, $lte: maxLat },
+      _longitude: { $gte: minLong, $lte: maxLong },
+    };
   }
 }
