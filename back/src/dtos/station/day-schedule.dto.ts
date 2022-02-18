@@ -10,7 +10,9 @@ export class DayScheduleDto {
     example: 'Mardi',
   })
   nom: Day;
+  @ApiProperty()
   ferme: boolean;
+  @ApiProperty()
   horaire: TimeScheduleDto;
 }
 

@@ -3,7 +3,7 @@ import { StationController } from './controllers/station.controller';
 import { StationService } from './services/station.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Station, StationSchema } from './schemas/station.schema';
-import { ApiController } from './controllers/api.controller';
+import { FuelController } from './controllers/fuel.controller';
 import { StationPrixOnly, StationPrixOnlySchema } from './schemas/station-prix-only.schema';
 
 @Module({
@@ -15,7 +15,7 @@ import { StationPrixOnly, StationPrixOnlySchema } from './schemas/station-prix-o
       { schema: StationPrixOnlySchema, name: StationPrixOnly.name, collection: 'Prix_History' },
     ]),
   ],
-  controllers: [StationController, ApiController],
+  controllers: [StationController, FuelController],
   providers: [StationService],
 })
 export class AppModule {}

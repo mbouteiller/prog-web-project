@@ -3,9 +3,10 @@ import { StationService } from '../services/station.service';
 import { Station } from '../schemas/station.schema';
 import { StationRequestDto } from '../dtos/station_entries.dto';
 import { StationDto } from '../dtos/station/station.dto';
-import { ApiBody, ApiExcludeEndpoint, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiExcludeEndpoint, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationPrixOnly } from '../schemas/station-prix-only.schema';
 import { StationPrixOnlyDto } from '../dtos/station/station-prix-only.dto';
+import { FuelPriceDto } from '../dtos/fuel-price.dto';
 
 @ApiTags('station')
 @Controller('stations')
@@ -23,6 +24,9 @@ export class StationController {
   @ApiOperation({
     summary: 'Get all station corresponding of the research',
   })
+  @ApiResponse({
+    type: [StationDto],
+  })
   @Get()
   GetStationFromFilter(@Body() filter: StationRequestDto): Promise<StationDto[]> {
     return this.appService.getWithFilter(filter).then((lst) => lst.map((s) => new StationDto(s)));
@@ -30,6 +34,9 @@ export class StationController {
 
   @ApiOperation({
     summary: 'Get price history of station corresponding to the research',
+  })
+  @ApiResponse({
+    type: [StationPrixOnlyDto],
   })
   @Get('/prix')
   GetStationPrixFromFilter(@Body() filter: StationRequestDto): Promise<StationPrixOnlyDto[]> {

@@ -5,19 +5,42 @@ import { SoldOutDto } from './sold-out.dto';
 import { Station } from '../../schemas/station.schema';
 import { Day, DayScheduleDto } from './day-schedule.dto';
 import { TimeScheduleDto } from './time-schedule.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class StationDto {
+  @ApiProperty({
+    example: '01000',
+  })
   cp: string;
+  @ApiProperty({
+    example: '01',
+  })
   department_num: string;
+  @ApiProperty()
   latitude: number;
+  @ApiProperty()
   longitude: number;
+  @ApiProperty()
   type: StationType;
+  @ApiProperty()
   address: string;
+  @ApiProperty()
   ville: string;
+  @ApiProperty()
   horaires: ScheduleDto;
+  @ApiProperty()
   services: string[];
+  @ApiProperty({
+    type: [FuelDto],
+  })
   prix: FuelDto[];
+  @ApiProperty({
+    type: [SoldOutDto],
+  })
   rupture: SoldOutDto[];
+  @ApiProperty({
+    type: [ClosureDto],
+  })
   fermeture: ClosureDto[];
 
   constructor(schema: Station) {

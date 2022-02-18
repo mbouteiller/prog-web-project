@@ -19,7 +19,9 @@ export class StationPrixOnlyDto {
   address: string;
   @ApiProperty()
   ville: string;
-  @ApiProperty()
+  @ApiProperty({
+    type: [FuelDto],
+  })
   prix: FuelDto[];
 
   constructor(schema: StationPrixOnly) {

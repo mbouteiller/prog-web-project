@@ -6,5 +6,8 @@ export class ScheduleDto {
     description: 'Presence of a vending automate.',
   })
   automate: boolean;
+  @ApiProperty({
+    type: [DayScheduleDto],
+  })
   jour: DayScheduleDto[];
 }
