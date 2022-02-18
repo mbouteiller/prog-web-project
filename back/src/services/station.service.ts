@@ -3,10 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Station, StationDocument } from '../schemas/station.schema';
 import { Model } from 'mongoose';
 import { StationRequestDto } from '../dtos/station_entries.dto';
+import { StationPrixOnly } from '../schemas/station-prix-only.schema';
 
 @Injectable()
 export class StationService {
-  constructor(@InjectModel(Station.name) private stationModel: Model<StationDocument>) {}
+  constructor(
+    @InjectModel(Station.name) private stationModel: Model<StationDocument>,
+    @InjectModel(StationPrixOnly.name) private prixModel: Model<StationDocument>,
+  ) {}
 
   getAll(): Promise<Station[]> {
     return this.stationModel.find().exec();
@@ -45,5 +49,19 @@ export class StationService {
 
   retrieveFuels() {
     return this.stationModel.distinct('prix._nom');
+  }
+
+  getPrixWithFilter(filter: StationRequestDto): Promise<StationPrixOnly[]> {
+    const query: any = {};
+    console.log('cp :', filter.postalCode);
+    if (filter.postalCode) query['_cp'] = { $regex: filter.postalCode, $options: 'i' };
+    // //TODO update fuel filter
+    // if (filter.fuel) query['prix._nom'] = filter.fuel;
+    // //TODO price distance
+    // if (filter.distance) {
+    //   query['_latitude'] = filter.distance.position.lat;
+    //   query['_longitude'] = filter.distance.position.long;
+    // }
+    return this.prixModel.find(query).exec();
   }
 }

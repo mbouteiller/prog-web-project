@@ -1,7 +1,14 @@
 import { TimeScheduleDto } from './time-schedule.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class DayScheduleDto {
+  @ApiProperty({
+    example: '1',
+  })
   id: number;
+  @ApiProperty({
+    example: 'Mardi',
+  })
   nom: Day;
   ferme: boolean;
   horaire: TimeScheduleDto;
