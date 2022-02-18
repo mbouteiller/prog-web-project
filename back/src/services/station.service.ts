@@ -22,29 +22,22 @@ export class StationService {
 
   getWithFilter(filter: StationRequestDto) {
     const match: any = {};
-    if (filter.fuel) match['prix._nom'] = { $in: filter.fuel };
+    const prixMatch: any = {};
+    if (filter.fuel) prixMatch['_nom'] = { $in: filter.fuel };
     if (filter.postalCode) match['_cp'] = { $regex: filter.postalCode, $options: 'i' };
     if (filter.priceMin || filter.priceMax) {
-      if (filter.priceMin && filter.priceMax) match['prix._valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
-      else if (filter.priceMin) match['prix._valeur'] = { $gte: filter.priceMin };
-      else match['prix._valeur'] = { $lte: filter.priceMax };
+      if (filter.priceMin && filter.priceMax) prixMatch['_valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
+      else if (filter.priceMin) prixMatch['_valeur'] = { $gte: filter.priceMin };
+      else prixMatch['_valeur'] = { $lte: filter.priceMax };
     }
-    return this.stationModel.aggregate([
-      {
-        $unwind: '$prix',
-      },
-      {
-        $match: match,
-      },
-      {
-        $group: {
-          _id: '$_id',
-          prix: {
-            $push: '$prix',
-          },
+    match['prix'] = { $elemMatch: prixMatch };
+    return this.stationModel
+      .aggregate([
+        {
+          $match: match,
         },
-      },
-    ]);
+      ])
+      .exec();
   }
 
   retrieveFuels() {
@@ -52,16 +45,22 @@ export class StationService {
   }
 
   getPrixWithFilter(filter: StationRequestDto): Promise<StationPrixOnly[]> {
-    const query: any = {};
-    console.log('cp :', filter.postalCode);
-    if (filter.postalCode) query['_cp'] = { $regex: filter.postalCode, $options: 'i' };
-    // //TODO update fuel filter
-    // if (filter.fuel) query['prix._nom'] = filter.fuel;
-    // //TODO price distance
-    // if (filter.distance) {
-    //   query['_latitude'] = filter.distance.position.lat;
-    //   query['_longitude'] = filter.distance.position.long;
-    // }
-    return this.prixModel.find(query).exec();
+    const match: any = {};
+    const prixMatch: any = {};
+    if (filter.fuel) prixMatch['_nom'] = { $in: filter.fuel };
+    if (filter.postalCode) match['_cp'] = { $regex: filter.postalCode, $options: 'i' };
+    if (filter.priceMin || filter.priceMax) {
+      if (filter.priceMin && filter.priceMax) prixMatch['_valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
+      else if (filter.priceMin) prixMatch['_valeur'] = { $gte: filter.priceMin };
+      else prixMatch['_valeur'] = { $lte: filter.priceMax };
+    }
+    match['prix'] = { $elemMatch: prixMatch };
+    return this.prixModel
+      .aggregate([
+        {
+          $match: match,
+        },
+      ])
+      .exec() as Promise<StationPrixOnly[]>;
   }
 }

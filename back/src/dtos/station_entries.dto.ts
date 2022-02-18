@@ -1,4 +1,4 @@
-import {IsArray, IsNumber, IsOptional, IsString, Min, ValidateNested} from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
 import { DistanceDto } from './distance.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -41,5 +41,6 @@ export class StationRequestDto {
     example: ['Gazole'],
   })
   @IsArray()
+  @IsOptional()
   public fuel: string[];
 }
