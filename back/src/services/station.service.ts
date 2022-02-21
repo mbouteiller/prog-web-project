@@ -129,9 +129,9 @@ export class StationService {
       const insideMatch = {};
       if (f?.fuel) insideMatch['_nom'] = f.fuel;
       if (f?.priceMin || f?.priceMax) {
-        if (f.priceMin && f.priceMax) insideMatch['_valeur'] = { $gte: f.priceMin, $lte: f.priceMax };
-        else if (f.priceMin) insideMatch['_valeur'] = { $gte: f.priceMin };
-        else insideMatch['_valeur'] = { $lte: f.priceMax };
+        if (f.priceMin && f.priceMax) insideMatch['_valeur'] = { $gte: f.priceMin * 1000, $lte: f.priceMax * 1000 };
+        else if (f.priceMin) insideMatch['_valeur'] = { $gte: f.priceMin * 1000 };
+        else insideMatch['_valeur'] = { $lte: f.priceMax * 1000 };
       }
       result.push({
         $match: {

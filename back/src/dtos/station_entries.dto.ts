@@ -19,9 +19,12 @@ export class StationRequestDto {
   @IsOptional()
   public postalCode: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    type: [FuelRequestDto],
+  })
   @IsArray()
   @IsOptional()
+  @ValidateNested()
   public fuelFilter: FuelRequestDto[];
 
   @IsOptional()
