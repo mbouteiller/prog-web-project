@@ -97,7 +97,7 @@ export class StationDto {
       });
       if (this.rupture.length && !this.rupture[0]) this.rupture = [];
     } else this.rupture = [];
-    if (schema.fermeture) {
+    if (schema.fermeture && Array.isArray(schema.fermeture)) {
       this.fermeture = schema.fermeture.map((f) => {
         return {
           type: ClosureType[f.type],
