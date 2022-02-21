@@ -1,26 +1,9 @@
 import { IsArray, IsNumber, IsObject, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
 import { DistanceDto } from './distance.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { FuelRequestDto } from './fuel_entries.dto';
 
 export class StationRequestDto {
-  @ApiPropertyOptional({
-    description: 'The minimum price that the User wants to pay',
-    example: '0.5',
-  })
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  public priceMin: number;
-
-  @ApiPropertyOptional({
-    description: 'The maximum price that the User wants to pay',
-    example: '1.5',
-  })
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  public priceMax: number;
-
   @ApiPropertyOptional({
     description: 'Search stations in a radius of X km around the given position',
   })
@@ -36,13 +19,10 @@ export class StationRequestDto {
   @IsOptional()
   public postalCode: string;
 
-  @ApiPropertyOptional({
-    description: 'Search only station which sell this type of fuel',
-    example: ['Gazole'],
-  })
+  @ApiPropertyOptional()
   @IsArray()
   @IsOptional()
-  public fuel: string[];
+  public fuelFilter: FuelRequestDto[];
 
   @IsOptional()
   @IsObject()

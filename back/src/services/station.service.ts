@@ -6,7 +6,7 @@ import { StationRequestDto } from '../dtos/station_entries.dto';
 import { StationPrixOnly } from '../schemas/station-prix-only.schema';
 import { PositionDto } from '../dtos/position.dto';
 import { DistanceDto } from '../dtos/distance.dto';
-import { FuelPriceDto } from '../dtos/fuel-price.dto';
+import { FuelPriceDto } from '../dtos/station/fuel-price.dto';
 
 @Injectable()
 export class StationService {
@@ -27,7 +27,7 @@ export class StationService {
     let match: any = {};
     const prixMatch: any = {};
     if (filter?.fuel) prixMatch['_nom'] = { $in: filter.fuel };
-    if (filter?.postalCode) match['_cp'] = { $regex: "^"+filter.postalCode, $options: 'i' };
+    if (filter?.postalCode) match['_cp'] = { $regex: '^' + filter.postalCode, $options: 'i' };
     if (filter?.priceMin || filter?.priceMax) {
       if (filter.priceMin && filter.priceMax) prixMatch['_valeur'] = { $gte: filter.priceMin, $lte: filter.priceMax };
       else if (filter.priceMin) prixMatch['_valeur'] = { $gte: filter.priceMin };

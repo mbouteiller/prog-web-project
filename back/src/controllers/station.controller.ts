@@ -6,7 +6,7 @@ import { StationDto } from '../dtos/station/station.dto';
 import { ApiBody, ApiExcludeEndpoint, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationPrixOnly } from '../schemas/station-prix-only.schema';
 import { StationPrixOnlyDto } from '../dtos/station/station-prix-only.dto';
-import { FuelPriceDto } from '../dtos/fuel-price.dto';
+import { FuelPriceDto } from '../dtos/station/fuel-price.dto';
 
 @ApiTags('station')
 @Controller('stations')

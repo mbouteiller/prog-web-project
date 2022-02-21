@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { StationService } from '../services/station.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationRequestDto } from '../dtos/station_entries.dto';
-import { FuelPriceDto } from '../dtos/fuel-price.dto';
+import { FuelPriceDto } from '../dtos/station/fuel-price.dto';
 
 @ApiTags('fuel')
 @Controller('fuel')
