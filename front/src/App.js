@@ -7,7 +7,6 @@ import React, {useContext, useEffect, useState} from 'react'
 import MetaTab from "./components/tab/MetaTab";
 import MapComponent from "./components/map/Map";
 import Filters from "./components/filters/Filters";
-import {get} from "leaflet/src/dom/DomUtil";
 import {ThemeContext} from "./utils/context/Theme";
 
 const NightModeButton = styled.button`
@@ -29,7 +28,13 @@ function App() {
   const { toggleTheme, theme } = useContext(ThemeContext)
 
   async function getStations(args) {
-    let response = await fetch(url + "stations/test?cp=06000" + args);
+    let response = await fetch(url + "stations", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(args),
+    });
     if (response.ok) {
       let json = await response.json();
       json = json.filter(isValidPosition)
@@ -41,7 +46,7 @@ function App() {
   }
 
   async function getFuels() {
-    let response = await fetch(url + "api/fuel");
+    let response = await fetch(url + "fuel");
     if (response.ok) {
       let json = await response.json();
       setFuels(json)
@@ -52,7 +57,8 @@ function App() {
   }
 
   useEffect(() => {
-    getStations("").then(() => setLoading(false))
+    let args = {"postalCode": "06000"}
+    getStations(args).then(() => setLoading(false))
   }, [])
 
   useEffect(() => {

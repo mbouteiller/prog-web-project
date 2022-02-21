@@ -1,0 +1,8 @@
+.priceFilter {
+    display: flex;
+    flex-direction: row;
+}
+
+.input {
+    height: fit-content;
+}
