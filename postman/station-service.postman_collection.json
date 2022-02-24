@@ -1,0 +1,436 @@
+{
+	"info": {
+		"_postman_id": "c4015a9b-a3fa-49c1-91bb-1b0d2a25b10a",
+		"name": "station-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "test",
+			"item": [
+				{
+					"name": "Test postal code filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let jsonData = pm.response.json()\r",
+									"\r",
+									"pm.test('The `cp` is 01000', () => {\r",
+									"    _.each(jsonData.cp, (cp) => {\r",
+									"        pm.expect(cp).to.equal('01000')\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"postalCode\": \"01000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/stations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test fuel filter with Gazole between 1.75 and 1.78",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let jsonData = pm.response.json()\r",
+									"\r",
+									"pm.test('The Gazole prices are between 1.75 and 1.78', () => {\r",
+									"    _.each(jsonData, (station) => {\r",
+									"        _.each(station.prix, (prix) => {\r",
+									"            if(prix.nom == \"Gazole\"){\r",
+									"                pm.expect(prix.valeur).to.be.greaterThan(1.75)\r",
+									"                pm.expect(prix.valeur).to.be.lessThan(1.78)\r",
+									"            }\r",
+									"        })\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"postalCode\": \"01\",\r\n    \"fuelFilter\": [\r\n    {\r\n      \"priceMin\": 1.75,\r\n      \"priceMax\": 1.78,\r\n      \"fuel\": \"Gazole\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/stations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test error bad format entry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request with non formatted key\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"codepostal\": \"06200\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/fuel/average",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fuel",
+								"average"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "request",
+			"item": [
+				{
+					"name": "Get Stations with all filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"distance\": {\r\n    \"distance\": 20,\r\n    \"position\": {\r\n      \"lat\": 43.6201,\r\n      \"long\": 7.06837\r\n    }\r\n  },\r\n  \"postalCode\": \"06200\",\r\n  \"fuelFilter\": [\r\n    {\r\n      \"priceMin\": 1,\r\n      \"priceMax\": 2,\r\n      \"fuel\": \"Gazole\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/stations",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stations in a specific region",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"postalCode\": \"06200\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/stations",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stations in a radius of 15km from our current position",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"distance\": {\r\n    \"distance\": 15,\r\n    \"position\": {\r\n      \"lat\": 43.6201,\r\n      \"long\": 7.06837\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/stations",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get stations that contains E10 and Gazole in 01 department",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"postalCode\": \"01\",\r\n  \"fuelFilter\": [\r\n    {\r\n      \"fuel\": \"Gazole\"\r\n    },\r\n    {\r\n      \"fuel\": \"E10\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/stations",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fuel available in the country",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/fuel",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fuel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get price history of a specific station",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"distance\": {\r\n    \"distance\": 0.00001,\r\n    \"position\": {\r\n      \"lat\": 43.66993,\r\n      \"long\": 7.22277\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/stations/prix",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stations",
+								"prix"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get average of a fuel in a distance of 10 km from current position",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"distance\": {\r\n    \"distance\": 10,\r\n    \"position\": {\r\n      \"lat\": 43.6201,\r\n      \"long\": 7.06837\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/fuel/average",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fuel",
+								"average"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
