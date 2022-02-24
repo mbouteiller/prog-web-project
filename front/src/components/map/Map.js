@@ -1,7 +1,10 @@
 import './Map.css';
 
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+
 import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 import L from 'leaflet';
 
 const customMarker = new L.Icon({
@@ -19,13 +22,15 @@ function Map({stations}) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {stations.map((value, index) => (
-        <Marker position={[value.latitude, value.longitude]} icon={customMarker} key={index}>
-          <Popup>
-            {index + 1} is for popup with lat: {value.latitude} and lon {value.longitude}
-          </Popup>
-        </Marker>
-      ))}
+      <MarkerClusterGroup disableClusteringAtZoom={13}>
+        {stations.map((value, index) => (
+          <Marker position={[value.latitude, value.longitude]} icon={customMarker} key={index}>
+            <Popup>
+              {index + 1} is for popup with lat: {value.latitude} and lon {value.longitude}
+            </Popup>
+          </Marker>
+        ))}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 }
