@@ -8,6 +8,9 @@ import MetaTab from "./components/tab/MetaTab";
 import MapComponent from "./components/map/Map";
 import Filters from "./components/filters/Filters";
 import {ThemeContext} from "./utils/context/Theme";
+import FilterProvider from './utils/context/FilterLocalisation';
+import FilterPriceProvider from "./utils/context/FilterPrice";
+import FilterFuelProvider from "./utils/context/FilterFuel";
 
 const NightModeButton = styled.button`
     background-color: transparent;
@@ -57,7 +60,7 @@ function App() {
   }
 
   useEffect(() => {
-    let args = {"postalCode": "06000"}
+    let args = {"postalCode": "06"}
     getStations(args).then(() => setLoading(false))
   }, [])
 
@@ -84,7 +87,13 @@ function App() {
       }}>MARCHE CONNARD</button>
       <div style={{display: 'flex', flexDirection: 'row'}}>
         <MapComponent stations={stations}/>
-        <Filters fuels={fuels} changeStations={getStations}/>
+        <FilterProvider>
+          <FilterPriceProvider>
+            <FilterFuelProvider>
+              <Filters fuels={fuels} changeStations={getStations}/>
+            </FilterFuelProvider>
+          </FilterPriceProvider>
+        </FilterProvider>
       </div>
       <div className="tab">
         <MetaTab/>

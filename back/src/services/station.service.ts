@@ -77,7 +77,6 @@ export class StationService {
       ...filter?.innerRequest,
       ...StationService.fromPositionRequestToMatchRequest(filter?.distance),
     };
-    console.log(match);
     return this.stationModel
       .aggregate(
         fuelMatches.concat([
