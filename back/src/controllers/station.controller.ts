@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
 import { StationService } from '../services/station.service';
 import { Station } from '../schemas/station.schema';
 import { StationRequestDto } from '../dtos/station_entries.dto';
@@ -28,6 +28,7 @@ export class StationController {
     type: [StationDto],
   })
   @Post()
+  @HttpCode(200)
   GetStationFromFilter(@Body() filter: StationRequestDto): Promise<StationDto[]> {
     return this.appService.getWithFilter(filter).then((lst) => lst.map((s) => new StationDto(s)));
   }
@@ -39,6 +40,7 @@ export class StationController {
     type: [StationPrixOnlyDto],
   })
   @Post('/prix')
+  @HttpCode(200)
   GetStationPrixFromFilter(@Body() filter: StationRequestDto): Promise<StationPrixOnlyDto[]> {
     return this.appService.getPrixWithFilter(filter).then((lst) => lst.map((s) => new StationPrixOnlyDto(s)));
   }
