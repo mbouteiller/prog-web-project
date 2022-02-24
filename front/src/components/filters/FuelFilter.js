@@ -1,9 +1,11 @@
 import Checkbox from "../checkbox/Checkbox";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {FilterFuelContext} from "../../utils/context/FilterFuel";
 
-export default function Filters({fuels, handleChange}) {
+export default function Filters({fuels}) {
 
     const [checked, setChecked] = useState([]);
+    const [filterFuel, setFilterFuel] = useContext(FilterFuelContext)
 
     function handleCheckboxChange(changeEvent) {
         let updatedList = [...checked];
@@ -13,7 +15,7 @@ export default function Filters({fuels, handleChange}) {
             updatedList.splice(checked.indexOf(changeEvent.target.name), 1);
         }
         setChecked(updatedList);
-        handleChange(updatedList)
+        setFilterFuel(updatedList)
     };
 
     return (

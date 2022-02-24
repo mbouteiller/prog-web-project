@@ -1,7 +1,9 @@
 import './PriceFilter.css';
-import {useState} from "react";
+
+import {useContext, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCheck, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {FilterPriceContext} from "../../utils/context/FilterPrice";
 
 export default function PriceFilter(props) {
 
@@ -9,20 +11,24 @@ export default function PriceFilter(props) {
     const [maxPrice, setMaxPrice] = useState("");
     const [fuel, setFuel] = useState("");
 
+    const [filterPrice, setFilterPrice] = useContext(FilterPriceContext)
+
     function handleMinPrice(event) {
-        setMinPrice(event.target.value);
+      setMinPrice(event.target.value);
+      filterPrice[props.index].priceMin = event.target.value;
+      setFilterPrice(filterPrice);
     }
 
     function handleMaxPrice(event) {
-        setMaxPrice(event.target.value);
+      setMaxPrice(event.target.value);
+      filterPrice[props.index].priceMax = event.target.value;
+      setFilterPrice(filterPrice);
     }
 
     function handleFuel(event) {
-        setFuel(event.target.value);
-    }
-
-    function sendToFilter() {
-        props.handleChange({"index": props.index, "fuel": fuel, "minPrice": minPrice, "maxPrice": maxPrice});
+      setFuel(event.target.value);
+      filterPrice[props.index].fuel = event.target.value;
+      setFilterPrice(filterPrice);
     }
 
     return (
@@ -33,9 +39,8 @@ export default function PriceFilter(props) {
                     return <option value={value} key={index}>{value}</option>
                 })}
             </select>
-            <input type="text" value={minPrice} onChange={handleMinPrice} />
-            <input type="text" value={maxPrice} onChange={handleMaxPrice} />
-            <button onClick={sendToFilter}><FontAwesomeIcon icon={faCheck} size="1x" /></button>
+            <input type="text" placeholder="Prix min" value={minPrice} onChange={handleMinPrice} />
+            <input type="text" placeholder="Prix max"value={maxPrice} onChange={handleMaxPrice} />
             <button onClick={props.removeFilter}><FontAwesomeIcon icon={faTrash} size="1x" /></button>
         </div>
     )
