@@ -1,6 +1,7 @@
 import Tab from "./Tab";
 import styled from "styled-components";
 import React, {useState} from "react";
+import Chart from "../chart/Chart";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -32,8 +33,9 @@ const Styles = styled.div`
 
 function MetaTab() {
 
-  const url = "http://localhost:5000/stations/test?cp=06000"
+  const url = "http://localhost:5000/"
   const [stations, setStations] = useState([]);
+  const [prices, setPrices] = useState([]);
 
   const columns = React.useMemo(
     () => [
@@ -51,6 +53,15 @@ function MetaTab() {
           {
             Header: 'Services',
             accessor: 'services',
+          },
+          {
+            Header: 'Graph',
+            accessor: '',
+            Cell: ({ cell }) => (
+              <button value={cell.name} onClick={() => makeChart(cell)}>
+                draw
+              </button>
+            )
           }
         ],
       },
@@ -58,12 +69,51 @@ function MetaTab() {
     []
   )
 
-  async function getStations() {
-    let response = await fetch(url);
+  function makeChart(cell) {
+    getStationPrices(
+      cell.row.original.latitude,
+      cell.row.original.longitude,
+      cell.row.original.postalCode
+    ).then((result) => {setPrices(result)});
+  }
+
+  async function getStationPrices(lat, long, postalCode) {
+    let args = {
+      "distance": {
+        "distance": 1,
+        "position": {
+          "lat": 46.221,
+          "long": 5.245
+        }
+      },
+      "postalCode": "01000",
+    }
+
+    args.distance.position.lat = lat;
+    args.distance.position.long = long;
+    args.postalCode = postalCode;
+
+    let response = await fetch(url + "stations/prix", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(args),
+    });
+
     if (response.ok) {
       let json = await response.json();
-      console.log(json[0]);
-      return json;
+      return json[0].prix;
+    } else {
+      alert("HTTP-Error: " + response.status);
+      return [];
+    }
+  }
+
+  async function getStations() {
+    let response = await fetch(url + "stations/test?cp=06000");
+    if (response.ok) {
+      return await response.json();
     } else {
       alert("HTTP-Error: " + response.status);
       return [];
@@ -73,9 +123,10 @@ function MetaTab() {
   return (
     <Styles>
       <button onClick={() => {
-        getStations().then((result) => {setStations(result)})
+        getStations().then((result) => {setStations(result); console.log(result)})
       }}>MARCHE CONNARD</button>
       <Tab columns={columns} data={stations} />
+      <Chart data={prices} />
     </Styles>
   );
 }
