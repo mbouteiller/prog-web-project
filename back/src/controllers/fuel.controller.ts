@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { StationService } from '../services/station.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationRequestDto } from '../dtos/station_entries.dto';
@@ -23,6 +23,7 @@ export class FuelController {
   @ApiResponse({
     type: [FuelPriceDto],
   })
+  @HttpCode(200)
   @Post('average')
   GetFuelAverage(@Body() filter: StationRequestDto): Promise<FuelPriceDto[]> {
     return this.appService.retrieveFuelsAverage(filter);
