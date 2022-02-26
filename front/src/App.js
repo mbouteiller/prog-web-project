@@ -44,7 +44,6 @@ function App() {
       let json = await response.json();
       json = json.filter(isValidPosition)
       setStations(json);
-      console.log(stations);
     } else {
       alert("HTTP-Error: " + response.status);
     }
@@ -56,14 +55,13 @@ function App() {
     if (response.ok) {
       let json = await response.json();
       setFuels(json)
-      console.log(fuels)
     } else {
       alert("HTTP-Error: " + response.status);
     }
   }
 
   useEffect(() => {
-    let args = {"postalCode": ""}
+    let args = {"postalCode": "06"}
     //setLoading(true);
     getStations(args).then()
   }, [])
@@ -106,7 +104,7 @@ function App() {
           </FilterProvider>
         </div>
         <div className="tab">
-          <MetaTab/>
+          <MetaTab stations={stations}/>
         </div>
       </ThemeContext.Provider>
     </div>

@@ -2,6 +2,14 @@ import {LineChart, Legend, Line, Tooltip, XAxis, YAxis, CartesianGrid} from "rec
 
 function Chart({data}) {
 
+  if (data.length === 0) {
+    return (
+      <>
+        <span>NO PRICE DATA</span>
+      </>
+    )
+  }
+
   let formattedPrices = [];
   let dates = [];
 
@@ -25,11 +33,9 @@ function Chart({data}) {
     formattedPrices.push(result);
   })
 
-  console.log(formattedPrices)
-
   return (
     <>
-      <LineChart width={730} height={250} data={formattedPrices}
+      <LineChart width={1000} height={400} data={formattedPrices}
                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
@@ -37,11 +43,11 @@ function Chart({data}) {
         <Tooltip />
         <Legend />
         <Line type="monotone" dataKey="E10" stroke="#8884d8" />
-        <Line type="monotone" dataKey="E85" stroke="#8884d8" />
-        <Line type="monotone" dataKey="GPLc" stroke="#8884d8" />
-        <Line type="monotone" dataKey="Gazole" stroke="#8884d8" />
-        <Line type="monotone" dataKey="SP95" stroke="#8884d8" />
-        <Line type="monotone" dataKey="SP98" stroke="#8884d8" />
+        <Line type="monotone" dataKey="E85" stroke="#fab3a9" />
+        <Line type="monotone" dataKey="GPLc" stroke="#c6ad94" />
+        <Line type="monotone" dataKey="Gazole" stroke="#7fb285" />
+        <Line type="monotone" dataKey="SP95" stroke="#463239" />
+        <Line type="monotone" dataKey="SP98" stroke="#ed6b86" />
       </LineChart>
     </>
   )

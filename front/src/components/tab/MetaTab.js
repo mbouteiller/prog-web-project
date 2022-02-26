@@ -3,7 +3,8 @@ import styled from "styled-components";
 import React, {useState} from "react";
 import Chart from "../chart/Chart";
 
-const Styles = styled.div`
+const TabStyles = styled.div`
+  margin-bottom: 50px;
   padding: 1rem;
 
   table {
@@ -31,10 +32,14 @@ const Styles = styled.div`
     }
   }`
 
-function MetaTab() {
+const ChartStyles = styled.div`
+  margin-left: 10%;
+  margin-bottom: 50px;
+`
+
+function MetaTab({stations}) {
 
   const url = "http://localhost:5000/"
-  const [stations, setStations] = useState([]);
   const [prices, setPrices] = useState([]);
 
   const columns = React.useMemo(
@@ -43,8 +48,8 @@ function MetaTab() {
         Header: 'Stations',
         columns: [
           {
-            Header: 'Adresse',
-            accessor: 'adresse',
+            Header: 'Code postal',
+            accessor: 'cp',
           },
           {
             Header: 'Ville',
@@ -53,13 +58,25 @@ function MetaTab() {
           {
             Header: 'Services',
             accessor: 'services',
+            Cell: ({ cell }) => {
+              let text = "";
+              cell.value.forEach((element, index) => {
+                if (index > 0) {
+                  text += (", " + element);
+                }
+                else {
+                  text += element;
+                }
+              })
+              return text;
+            }
           },
           {
             Header: 'Graph',
             accessor: '',
             Cell: ({ cell }) => (
               <button value={cell.name} onClick={() => makeChart(cell)}>
-                draw
+                Prix
               </button>
             )
           }
@@ -110,24 +127,15 @@ function MetaTab() {
     }
   }
 
-  async function getStations() {
-    let response = await fetch(url + "stations/test?cp=06000");
-    if (response.ok) {
-      return await response.json();
-    } else {
-      alert("HTTP-Error: " + response.status);
-      return [];
-    }
-  }
-
   return (
-    <Styles>
-      <button onClick={() => {
-        getStations().then((result) => {setStations(result); console.log(result)})
-      }}>MARCHE CONNARD</button>
-      <Tab columns={columns} data={stations} />
-      <Chart data={prices} />
-    </Styles>
+    <>
+      <TabStyles>
+        <Tab columns={columns} data={stations} />
+      </TabStyles>
+      <ChartStyles>
+        <Chart data={prices} />
+      </ChartStyles>
+    </>
   );
 }
 
