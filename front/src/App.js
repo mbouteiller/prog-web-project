@@ -11,6 +11,7 @@ import {ThemeContext} from "./utils/context/Theme";
 import FilterProvider from './utils/context/FilterLocalisation';
 import FilterPriceProvider from "./utils/context/FilterPrice";
 import FilterFuelProvider from "./utils/context/FilterFuel";
+import {Backdrop, CircularProgress} from "@mui/material";
 
 const NightModeButton = styled.button`
     background-color: transparent;
@@ -31,6 +32,7 @@ function App() {
   const { toggleTheme, theme } = useContext(ThemeContext)
 
   async function getStations(args) {
+    setLoading(true);
     let response = await fetch(url + "stations", {
       method: 'POST',
       headers: {
@@ -42,10 +44,11 @@ function App() {
       let json = await response.json();
       json = json.filter(isValidPosition)
       setStations(json);
-      console.log(stations)
+      console.log(stations);
     } else {
       alert("HTTP-Error: " + response.status);
     }
+    setLoading(false);
   }
 
   async function getFuels() {
@@ -60,8 +63,9 @@ function App() {
   }
 
   useEffect(() => {
-    let args = {"postalCode": "06"}
-    getStations(args).then(() => setLoading(false))
+    let args = {"postalCode": ""}
+    //setLoading(true);
+    getStations(args).then()
   }, [])
 
   useEffect(() => {
@@ -82,22 +86,28 @@ function App() {
           Thème : {theme === 'light' ? '☀️' : '🌙 '}
         </NightModeButton>
       </header>
-      <button onClick={() => {
-        setLoading(true)
-      }}>MARCHE CONNARD</button>
-      <div style={{display: 'flex', flexDirection: 'row'}}>
-        <MapComponent stations={stations}/>
-        <FilterProvider>
-          <FilterPriceProvider>
-            <FilterFuelProvider>
-              <Filters fuels={fuels} changeStations={getStations}/>
-            </FilterFuelProvider>
-          </FilterPriceProvider>
-        </FilterProvider>
-      </div>
-      <div className="tab">
-        <MetaTab/>
-      </div>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          { loading ?
+              <Backdrop
+                  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                  open={loading}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+              : <div/>
+          }
+          <MapComponent stations={stations}/>
+          <FilterProvider>
+            <FilterPriceProvider>
+              <FilterFuelProvider>
+                <Filters fuels={fuels} changeStations={getStations}/>
+              </FilterFuelProvider>
+            </FilterPriceProvider>
+          </FilterProvider>
+        </div>
+        <div className="tab">
+          <MetaTab/>
+        </div>
       </ThemeContext.Provider>
     </div>
   );
