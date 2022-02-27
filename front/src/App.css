@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+
+.logo {
+  margin: 10px;
+}
+
+.body {
+  display: flex;
+  flex-direction: row;
+}
+
+.App-header {
+  background-color: #282c34;
+  display: flex;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  justify-content: space-between;
+  align-items: center;
+}

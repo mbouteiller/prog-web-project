@@ -1,0 +1,23 @@
+@media only screen and (min-width: 1000px) {
+    .container {
+        width: 30%;
+        height: 500px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .container {
+        width: 100%;
+    }
+}
+
+.fuel-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 1em;
+}
+
+.fuel {
+    flex: 1 0 50%;
+}

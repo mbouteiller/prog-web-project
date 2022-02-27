@@ -1,0 +1,12 @@
+.priceFilter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-top: 0.5em;
+}
+
+.input {
+    height: fit-content;
+    width: 25%;
+}
