@@ -1,6 +1,27 @@
-.leaflet-container {
-    width: 70%;
-    height: 500px;
+@media only screen and (min-width: 1000px) {
+    .leaflet-container {
+        width: 70%;
+        height: 500px;
+    }
+
+    .map-body {
+        display: flex;
+        flex-direction: row;
+        margin: 1em;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .leaflet-container {
+        width: 100%;
+        height: 500px;
+    }
+
+    .map-body {
+        display: flex;
+        flex-direction: column;
+        margin: 1em;
+    }
 }
 
 #map { height: 500px; }
@@ -8,8 +29,6 @@
 .popup {
     width: auto !important;
 }
-
-
 
 .popup-fuel-container {
     margin-right: 1em;
@@ -19,3 +38,4 @@
 .popup-schedule-container {
     width: 50%;
 }
+

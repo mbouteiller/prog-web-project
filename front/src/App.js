@@ -103,7 +103,7 @@ function App() {
             Thème : {theme === 'light' ? '☀️' : '🌙 '}
           </NightModeButton>
         </header>
-        <div style={{display: 'flex', flexDirection: 'row', margin: '1em'}}>
+        <div className="map-body">
           { loading ?
               <Backdrop
                   sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
