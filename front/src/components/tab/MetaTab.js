@@ -41,6 +41,7 @@ function MetaTab({stations}) {
 
   const url = "http://localhost:5000/"
   const [prices, setPrices] = useState([]);
+  const [address, setaddress] = useState([]);
 
   const columns = React.useMemo(
     () => [
@@ -76,7 +77,7 @@ function MetaTab({stations}) {
             accessor: '',
             Cell: ({ cell }) => (
               <button className="button" value={cell.name} onClick={() => makeChart(cell)}>
-                Prix
+                Détails
               </button>
             )
           }
@@ -92,6 +93,11 @@ function MetaTab({stations}) {
       cell.row.original.longitude,
       cell.row.original.postalCode
     ).then((result) => {setPrices(result)});
+
+    getAddress(
+      cell.row.original.latitude,
+      cell.row.original.longitude
+    ).then((result) => {setaddress(result)})
   }
 
   async function getStationPrices(lat, long, postalCode) {
@@ -127,13 +133,25 @@ function MetaTab({stations}) {
     }
   }
 
+  async function getAddress(lat, long) {
+    let address = await fetch("http://api.positionstack.com/v1/reverse?access_key=935f9a855655607dfa8938ea45afd615&query=" + lat + "," + long);
+
+    if (address.ok) {
+      let json = await address.json();
+      return json.data[0].label;
+    } else {
+      alert("HTTP-Error: " + address.status);
+      return [];
+    }
+  }
+
   return (
     <>
       <TabStyles>
         <Tab columns={columns} data={stations} />
       </TabStyles>
       <ChartStyles>
-        <Chart data={prices} />
+        <Chart data={prices} address={address} />
       </ChartStyles>
     </>
   );
