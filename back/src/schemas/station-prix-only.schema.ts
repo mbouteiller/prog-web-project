@@ -19,7 +19,7 @@ export class StationPrixOnly {
   _longitude: number;
 
   @Prop()
-  address: string;
+  adresse: string;
 
   @Prop()
   ville: string;

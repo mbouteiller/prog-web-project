@@ -25,7 +25,7 @@ export class Station {
   _pop: string;
 
   @Prop()
-  address: string;
+  adresse: string;
 
   @Prop()
   ville: string;

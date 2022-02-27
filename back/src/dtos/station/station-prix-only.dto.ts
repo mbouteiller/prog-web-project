@@ -16,7 +16,7 @@ export class StationPrixOnlyDto {
   @ApiProperty()
   longitude: number;
   @ApiProperty()
-  address: string;
+  adresse: string;
   @ApiProperty()
   ville: string;
   @ApiProperty({

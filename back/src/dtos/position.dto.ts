@@ -4,14 +4,14 @@ import { ApiProperty } from '@nestjs/swagger';
 export class PositionDto {
   @ApiProperty({
     description: 'The latitude of the referred position',
-    example: '43.6201',
+    example: '46.20754',
   })
   @IsLatitude()
   public lat: number;
 
   @ApiProperty({
     description: 'The longitude of the referred position',
-    example: '7.06837',
+    example: '5.23758',
   })
   @IsLongitude()
   public long: number;

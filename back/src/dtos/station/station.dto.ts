@@ -23,7 +23,7 @@ export class StationDto {
   @ApiProperty()
   type: StationType;
   @ApiProperty()
-  address: string;
+  adresse: string;
   @ApiProperty()
   ville: string;
   @ApiProperty()
@@ -51,7 +51,7 @@ export class StationDto {
     if (schema._longitude) this.longitude = schema._longitude / 100000;
     if (schema._latitude) this.latitude = schema._latitude / 100000;
     if (schema._pop) this.type = StationType[schema._pop];
-    if (schema.address) this.address = schema.address;
+    if (schema.adresse) this.adresse = schema.adresse;
     if (schema.ville) this.ville = schema.ville;
     if (schema.horaires) {
       this.horaires = {
