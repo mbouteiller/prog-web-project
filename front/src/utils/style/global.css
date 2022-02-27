@@ -1,0 +1,46 @@
+.button{
+     color:#fff;
+     background-color:#e74c3c;
+     outline: none;
+     border: 0;
+     padding:10px 20px;
+     text-transform:uppercase;
+     border-radius:5px;
+     cursor:pointer;
+     position:relative;
+}
+
+.button-filter-price {
+     padding:1px 5px;
+}
+
+.button:hover,
+.button:focus {
+    background-color: rgba(231, 76, 60, 0.66);
+}
+
+.input-container input{
+     border:0;
+     border-bottom:1px solid #555;
+     background:transparent;
+     width:100%;
+     padding:3px 0 0px 0;
+     font-size:16px;
+     color:#000;
+}
+.input-container input:focus{
+     border:none;
+     outline:none;
+     border-bottom:1px solid #e74c3c;
+}
+
+select {
+     background-color: #e74c3c;
+     color: white;
+     border:1px solid #e74c3c;
+     border-radius: 5px;
+}
+
+.box select option {
+     padding: 30px;
+}

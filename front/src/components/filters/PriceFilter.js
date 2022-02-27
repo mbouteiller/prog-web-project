@@ -1,4 +1,5 @@
 import './PriceFilter.css';
+import '../../utils/style/global.css'
 
 import {useContext, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,15 +34,19 @@ export default function PriceFilter(props) {
 
     return (
         <div className="priceFilter">
-            <select value={fuel} onChange={handleFuel}>
-                <option value="">Select fuel</option>
+            <select className="box" value={fuel} onChange={handleFuel}>
+                <option value="" disabled selected>Select fuel</option>
                 {props.fuels.map((value, index) => {
                     return <option value={value} key={index}>{value}</option>
                 })}
             </select>
-            <input type="text" placeholder="Prix min" value={minPrice} onChange={handleMinPrice} />
-            <input type="text" placeholder="Prix max"value={maxPrice} onChange={handleMaxPrice} />
-            <button onClick={props.removeFilter}><FontAwesomeIcon icon={faTrash} size="1x" /></button>
+            <div className="input input-container">
+                <input type="text" placeholder="Prix min" value={minPrice} onChange={handleMinPrice} />
+            </div>
+            <div className="input input-container">
+                <input type="text" placeholder="Prix max" value={maxPrice} onChange={handleMaxPrice} />
+            </div>
+            <button className="button button-filter-price" onClick={props.removeFilter}><FontAwesomeIcon icon={faTrash} size="1x" /></button>
         </div>
     )
 }
