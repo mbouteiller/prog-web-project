@@ -75,7 +75,7 @@ function MetaTab({stations}) {
             Header: 'Graph',
             accessor: '',
             Cell: ({ cell }) => (
-              <button value={cell.name} onClick={() => makeChart(cell)}>
+              <button className="button" value={cell.name} onClick={() => makeChart(cell)}>
                 Prix
               </button>
             )

@@ -29,6 +29,8 @@ function App() {
   const [fuels, setFuels] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const [position, setPosition] = useState({latitude: '', longitude: ''})
+
   const { toggleTheme, theme } = useContext(ThemeContext)
 
   async function getStations(args) {
@@ -60,14 +62,31 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     let args = {"postalCode": "06"}
-    //setLoading(true);
     getStations(args).then()
-  }, [])
+  }, [])*/
 
   useEffect(() => {
     getFuels().then()
+  }, [])
+
+  useEffect(() => {
+    let coords;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      coords = position.coords;
+      let args = {
+        "distance": {
+          "distance": 100,
+          "position": {
+            "lat": coords.latitude,
+            "long": coords.longitude
+          }
+        },
+      }
+      getStations(args).then()
+      setPosition(coords);
+    });
   }, [])
 
   function isValidPosition(element) {
@@ -77,14 +96,14 @@ function App() {
   return (
     <div className="App">
       <ThemeContext.Provider value="dark">
-      <header className="App-header">
-        <FontAwesomeIcon className="logo" icon={faGasPump} size="3x" />
-        <p><i className="fas fa-gas-pump"/>FUEL</p>
-        <NightModeButton onClick={() => toggleTheme()}>
-          Thème : {theme === 'light' ? '☀️' : '🌙 '}
-        </NightModeButton>
-      </header>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
+        <header className="App-header">
+          <FontAwesomeIcon className="logo" icon={faGasPump} size="3x" />
+          <p><i className="fas fa-gas-pump"/>FUEL</p>
+          <NightModeButton onClick={() => toggleTheme()}>
+            Thème : {theme === 'light' ? '☀️' : '🌙 '}
+          </NightModeButton>
+        </header>
+        <div style={{display: 'flex', flexDirection: 'row', margin: '1em'}}>
           { loading ?
               <Backdrop
                   sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -94,11 +113,11 @@ function App() {
               </Backdrop>
               : <div/>
           }
-          <MapComponent stations={stations}/>
+          <MapComponent stations={stations} position={position}/>
           <FilterProvider>
             <FilterPriceProvider>
               <FilterFuelProvider>
-                <Filters fuels={fuels} changeStations={getStations}/>
+                <Filters fuels={fuels} changeStations={getStations} position={position}/>
               </FilterFuelProvider>
             </FilterPriceProvider>
           </FilterProvider>

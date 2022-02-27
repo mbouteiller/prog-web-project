@@ -1,5 +1,5 @@
 import './Filters.css';
-import '../../global.css';
+import '../../utils/style/global.css';
 
 import {useContext, useState} from "react";
 import PriceFilter from './PriceFilter'
@@ -16,7 +16,7 @@ function useForceUpdate(){
     return () => setValue(value => value + 1); // update the state to force render
 }
 
-export default function Filters({fuels, changeStations}) {
+export default function Filters({fuels, changeStations, position}) {
 
     const [localisation, setLocalisation] = useContext(FiltersLocalisationContext)
     const [filterPrice, setFilterPrice] = useContext(FilterPriceContext)
@@ -28,7 +28,20 @@ export default function Filters({fuels, changeStations}) {
         let filters = []
         filterPrice.forEach(element => filters.push({"fuel": element.fuel, "priceMin": element.priceMin, "priceMax": element.priceMax}))
         filterFuel.forEach(element => filters.push({"fuel": element}))
-        let args = {"postalCode": localisation,"fuelFilter": filters}
+        let args;
+        if (localisation === '')
+        {
+            let distance = {
+                "distance": 100,
+                "position": {
+                    "lat": position.latitude,
+                    "long": position.longitude
+                }
+            };
+            args = {distance, "fuelFilter": filters}
+        } else {
+            args = {"postalCode": localisation,"fuelFilter": filters}
+        }
         console.log(args)
         changeStations(args).then()
     }

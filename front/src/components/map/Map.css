@@ -4,3 +4,18 @@
 }
 
 #map { height: 500px; }
+
+.popup {
+    width: auto !important;
+}
+
+
+
+.popup-fuel-container {
+    margin-right: 1em;
+    width: max-content;
+}
+
+.popup-schedule-container {
+    width: 50%;
+}

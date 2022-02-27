@@ -1,5 +1,5 @@
 import './PriceFilter.css';
-import '../../global.css'
+import '../../utils/style/global.css'
 
 import {useContext, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -35,7 +35,7 @@ export default function PriceFilter(props) {
     return (
         <div className="priceFilter">
             <select className="box" value={fuel} onChange={handleFuel}>
-                <option value="">Select fuel</option>
+                <option value="" disabled selected>Select fuel</option>
                 {props.fuels.map((value, index) => {
                     return <option value={value} key={index}>{value}</option>
                 })}
