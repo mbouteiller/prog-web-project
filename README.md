@@ -22,3 +22,6 @@ You can access the API docs at [http://localhost:5000/api](http://localhost:5000
 You can test the server api route with postman by running `run_test.sh` file.
 
 ## Project architecture
+- `/front` : the client side of our projet made in react.
+- `/back` : the server side of our project made in nestjs.
+- `/rapport` : the front reports of every member of the team.
