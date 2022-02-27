@@ -1,10 +1,11 @@
 import {LineChart, Legend, Line, Tooltip, XAxis, YAxis, CartesianGrid} from "recharts";
 
-function Chart({data}) {
+function Chart({data, address}) {
 
   if (data.length === 0) {
     return (
       <>
+        <div>{address}</div><br/>
         <span>NO PRICE DATA</span>
       </>
     )
@@ -35,6 +36,7 @@ function Chart({data}) {
 
   return (
     <>
+      <div>{address}</div><br/>
       <LineChart width={1000} height={400} data={formattedPrices}
                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
