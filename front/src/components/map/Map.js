@@ -35,7 +35,7 @@ function Map({stations, position}) {
         {stations.map((value, index) => (
           <Marker position={[value.latitude, value.longitude]} icon={customMarker} key={index}>
               <Popup className="popup">
-                  <span style={{fontWeight: "bold", fontSize: "1.4em"}}>{value.address === undefined ? value.ville : value.address}</span>
+                  <span style={{fontWeight: "bold", fontSize: "1.4em"}}>{value.adresse === undefined ? value.ville : value.adresse}</span>
                   <div style={{display: "flex", flexDirection: "row", width: 'max-content'}}>
                       <PopupFuel price={value.prix} rupture={value.rupture}/>
                       <PopupSchedule schedule={value.horaires}/>
