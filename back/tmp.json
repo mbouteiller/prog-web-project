@@ -1,0 +1,138 @@
+{
+  "_id": 1000004,
+  "_latitude": 4618800,
+  "_longitude": 524500,
+  "_cp": "01000",
+  "_pop": "R",
+  "adresse": "20 Avenue du Maréchal Juin",
+  "ville": "Bourg-en-Bresse",
+  "horaires": {
+    "_id": "621a34434e4e82cb99daabdd",
+    "_automate-24-24": "1",
+    "jour": [
+      {
+        "_id": 1,
+        "_nom": "Lundi",
+        "_ferme": "",
+        "horaire": {
+          "_id": "621a34434e4e82cb99daabde",
+          "_ouverture": "06.30",
+          "_fermeture": "20.00"
+        }
+      },
+      {
+        "_id": 2,
+        "_nom": "Mardi",
+        "_ferme": "",
+        "horaire": {
+          "_id": "621a34434e4e82cb99daabdf",
+          "_ouverture": "06.30",
+          "_fermeture": "20.00"
+        }
+      },
+      {
+        "_id": 3,
+        "_nom": "Mercredi",
+        "_ferme": "",
+        "horaire": {
+          "_id": "621a34434e4e82cb99daabe0",
+          "_ouverture": "06.30",
+          "_fermeture": "20.00"
+        }
+      },
+      {
+        "_id": 4,
+        "_nom": "Jeudi",
+        "_ferme": "",
+        "horaire": {
+          "_id": "621a34434e4e82cb99daabe1",
+          "_ouverture": "06.30",
+          "_fermeture": "20.00"
+        }
+      },
+      {
+        "_id": 5,
+        "_nom": "Vendredi",
+        "_ferme": "",
+        "horaire": {
+          "_id": "621a34434e4e82cb99daabe2",
+          "_ouverture": "06.30",
+          "_fermeture": "20.00"
+        }
+      },
+      {
+        "_id": 6,
+        "_nom": "Samedi",
+        "_ferme": "",
+        "horaire": {
+          "_id": "621a34434e4e82cb99daabe3",
+          "_ouverture": "07.30",
+          "_fermeture": "20.00"
+        }
+      },
+      {
+        "_id": 7,
+        "_nom": "Dimanche",
+        "_ferme": "1"
+      }
+    ]
+  },
+  "services": [
+    "Carburant additivé",
+    "Toilettes publiques",
+    "Boutique alimentaire",
+    "Station de gonflage",
+    "Boutique non alimentaire",
+    "Vente de gaz domestique (Butane, Propane)",
+    "Location de véhicule",
+    "Relais colis",
+    "Piste poids lourds",
+    "DAB (Distributeur automatique de billets)",
+    "Vente de fioul domestique",
+    "Vente d'additifs carburants",
+    "Automate CB 24/24"
+  ],
+  "prix": [
+    {
+      "_id": 2,
+      "_nom": "SP95",
+      "_maj": "2022-01-24T14:39:37",
+      "_valeur": 1830
+    },
+    {
+      "_id": 4,
+      "_nom": "GPLc",
+      "_maj": "2022-01-24T14:39:38",
+      "_valeur": 930
+    },
+    {
+      "_id": 1,
+      "_nom": "Gazole",
+      "_maj": "2022-01-24T14:39:37",
+      "_valeur": 1760
+    }
+  ],
+  "rupture": [
+    {
+      "_id": 6,
+      "_nom": "SP98",
+      "_debut": "2018-04-21T15:38:51",
+      "_fin": ""
+    },
+    {
+      "_id": 3,
+      "_nom": "E85",
+      "_debut": "2018-04-21T15:38:51",
+      "_fin": ""
+    },
+    {
+      "_id": 5,
+      "_nom": "E10",
+      "_debut": "2018-04-21T15:38:51",
+      "_fin": ""
+    }
+  ],
+  "fermeture": null
+}
+
+

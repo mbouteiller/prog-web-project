@@ -31,7 +31,7 @@ export class StationPrixOnlyDto {
     }
     if (schema._longitude) this.longitude = schema._longitude / 100000;
     if (schema._latitude) this.latitude = schema._latitude / 100000;
-    if (schema.address) this.address = schema.address;
+    if (schema.adresse) this.adresse = schema.adresse;
     if (schema.ville) this.ville = schema.ville;
     if (schema.prix) {
       this.prix = schema.prix.map((f) => {
